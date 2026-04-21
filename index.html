@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Artigos</title>
+    <style>
+        /* RESET E BASE */
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8f9fa; margin: 0; padding: 0; color: #333; }
+        
+        /* JUMBOTRON */
+        .jumbotron {
+            background: #333; /* Cor escura moderna */
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .jumbotron h1 {
+            margin: 0;
+            font-size: 3.5em;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .jumbotron p {
+            margin-top: 5px;
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+
+        /* GRID E CARDS */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px 20px; }
+        
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 25px; 
+        }
+
+        .card { 
+            background: white; border-radius: 12px; padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center;
+            transition: all 0.3s ease; cursor: pointer; position: relative;
+            display: flex; flex-direction: column;
+        }
+
+        .card:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .card img { 
+            width: 100%; height: 200px; 
+            object-fit: contain; 
+            background: #fdfdfd; border-radius: 8px;
+        }
+
+        .nome-pt { display: block; margin-top: 15px; font-weight: bold; color: #222; text-transform: capitalize; }
+        .nome-en { display: block; font-size: 0.9em; color: #777; font-style: italic; }
+
+        /* ESTILO INDISPONÍVEL */
+        .indisponivel { opacity: 0.4; filter: grayscale(1); }
+        .indisponivel::after {
+            content: "INDISPONÍVEL / UNAVAILABLE";
+            position: absolute; top: 40%; left: 0; width: 100%;
+            background: rgba(200, 0, 0, 0.9); color: white;
+            padding: 8px 0; font-size: 0.75em; font-weight: bold; transform: rotate(-10deg);
+        }
+
+        /* MODAL */
+        #modal {
+            display: none; position: fixed; z-index: 9999; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+            justify-content: center; align-items: center; cursor: zoom-out;
+        }
+        #modal img { max-width: 95%; max-height: 95%; object-fit: contain; }
+    </style>
+</head>
+<body>
+
+    <div class="jumbotron">
+        <h1>LISTA</h1>
+		<p>Vendas (Sales)</p>		
+		<a href="https://seabrapaiva.github.io/artigosD">>>>Ofertas (Gifts)</a>
+	</div>
+
+    <div class="container">
+        <div id="catalogo" class="grid"></div>
+    </div>
+
+    <div id="modal" onclick="this.style.display='none'">
+        <img id="img-zoom" src="">
+    </div>
+
+    <script src="lista.js"></script>
+    <script>
+        function renderizar() {
+            const container = document.getElementById('catalogo');
+            
+            if (typeof itensGaleria !== 'undefined') {
+                itensGaleria.forEach(item => {
+                    const statusClass = item.disponivel ? "" : "indisponivel";
+                    
+                    container.innerHTML += `
+                        <div class="card ${statusClass}" onclick="abrirZoom('${item.arquivo}')">
+                            <img src="${item.arquivo}" alt="${item.nome}">
+                            <span class="nome-pt">${item.nome}</span>
+                            <span class="nome-en">${item.name}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = "Erro: Certifique-se que o ficheiro 'lista.js' está na mesma pasta.";
+            }
+        }
+
+        function abrirZoom(src) {
+            document.getElementById('img-zoom').src = src;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        renderizar();
+    </script>
+</body>
+</html>
